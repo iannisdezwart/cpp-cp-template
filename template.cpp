@@ -4,6 +4,8 @@ using namespace std;
 
 // Types and formatting
 
+#define let auto
+
 using uc = uint8_t;
 using sc = int8_t;
 using us = uint16_t;
@@ -299,6 +301,51 @@ string rev(string str)
 	return str;
 }
 
+/**
+ *  Interlaces STR1 and STR2.
+ *  len(STR1) and len(STR2) have to be equal,
+ *  or len(STR1) has to beone more than len(STR2).
+ */
+string intl(const string& str1, const string& str2)
+{
+	string out;
+	size_t len2 = str2.size();
+
+	for (size_t i = 0; i < str1.size(); i++)
+	{
+		out += str1[i];
+		if (i != len2) out += str2[i];
+	}
+
+	return out;
+}
+
+/**
+ *  Splits STR into segments of equal length.
+ *  The right most segment is shorter than SEG_SIZ if len(STR) % SEG_SIZ != 0.
+ */
+vector<string> seg(const string& str, size_t seg_siz)
+{
+	vector<string> out;
+
+	for (size_t i = 0; i < str.size(); i += seg_siz)
+	{
+		out.push_back(str.substr(i, seg_siz));
+	}
+
+	return out;
+}
+
+/**
+ *  Splits STR into two segments of equal length.
+ */
+vector<string> halve(const string& str)
+{
+	size_t seg_siz = str.size() / 2;
+	if (str.size() % 2) seg_siz++;
+	return seg(str, seg_siz);
+}
+
 // Higher order functions
 
 template <typename T>
@@ -391,6 +438,32 @@ Ret sum(const vector<T>& vec)
 	sl out = 0;
 	for (const T& val : vec) out += val;
 	return out;
+}
+
+// Time
+
+/**
+ *  Converts hh:mm -> timestamp.
+ */
+size_t hh_mm_to_ts(const string& str)
+{
+	vector<string> hh_mm = spl(str, ":");
+
+	int hh = sti(hh_mm[0]);
+	int mm = sti(hh_mm[1]);
+
+	return hh * 60 + mm;
+}
+
+/**
+ *  Converts timestamp -> hh:mm.
+ */
+string ts_to_hh_mm(size_t ts)
+{
+	int hh = ts / 60;
+	int mm = ts % 60;
+
+	return to_string(hh) + ":" + to_string(mm);
 }
 
 // Units
