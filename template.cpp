@@ -62,6 +62,7 @@ sl stl(const string& str) { return stoll(str); }
 // Putting stuff on stdout
 
 #define pf(fmt, ...) printf(fmt, ##__VA_ARGS__)
+#define pnl cout << '\n'
 
 // String algorithms 
 
@@ -387,7 +388,7 @@ vector<T> flt(const vector<T>& vec, typename NoOp<function<bool (const T&)>>::ty
 template <typename Ret = sl, typename T>
 Ret sum(const vector<T>& vec)
 {
-	sl out;
+	sl out = 0;
 	for (const T& val : vec) out += val;
 	return out;
 }
