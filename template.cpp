@@ -15,6 +15,15 @@ using si = int32_t;
 using ul = uint64_t;
 using sl = int64_t;
 
+using sn = string;
+
+using vi = vector<si>;
+using vl = vector<sl>;
+using vs = vector<string>;
+
+#define pb push_back
+#define put cout <<
+
 #define db double
 #define prc(n) setprecision(n) <<
 #define fix(n) fixed << setprecision(n) <<
@@ -24,10 +33,35 @@ using sl = int64_t;
 
 // Control flow
 
+/**
+ *  Repeat loop.
+ *  i: [ 0, times >.
+ */
 #define lp(i, times) for (ssize_t i = 0; i < times; i++)
+
+/**
+ *  Regular for loop.
+ *  i: [ start, end >.
+ */
 #define fr(i, start, end) for (ssize_t i = start; i < end; i++)
+
+/**
+ *  Reverse repeat loop.
+ *  i: < times, 0 ].
+ */
 #define rlp(i, times) for (ssize_t i = times - 1; i >= 0; i--)
+
+/**
+ *  Reverse for loop.
+ *  i: < end, start ].
+ */
 #define rfr(i, start, end) for (ssize_t i = end - 1; i >= start; i--)
+
+/**
+ *  Loop over items  ** by reference **.
+ *  i: items in data structure.
+ */
+#define lpi(i, vec) for (auto& i : vec)
 
 // Utility functions
 
@@ -65,6 +99,117 @@ sl stl(const string& str) { return stoll(str); }
 
 #define pf(fmt, ...) printf(fmt, ##__VA_ARGS__)
 #define pnl cout << '\n'
+
+// Vector algorithms
+
+/**
+ * Bool: VEC contains SEARCH at least once.
+ * Use cnt(VEC, SEARCH) to get the number of occurences.
+ */
+template <typename T>
+bool has(const vector<T>& vec, const T& search)
+{
+	for (const T& i : vec)
+	{
+		if (i == search) return true;
+	}
+
+	return false;
+}
+
+/**
+ *  Sums the values in VEC.
+ *  @tparam  Ret  The number return type. Defaults to int32_t.
+ */
+template <typename Ret = sl, typename T>
+Ret sum(const vector<T>& vec)
+{
+	sl out = 0;
+	for (const T& val : vec) out += val;
+	return out;
+}
+
+// Higher order functions
+
+template <typename T>
+struct NoOp
+{
+	typedef T type;
+};
+
+/**
+ *  Maps values from VEC by CONV.
+ */
+template <typename To, typename From>
+vector<To> mp(const vector<From>& vec, typename NoOp<function<To (const From&)>>::type conv)
+{
+	vector<To> out;
+
+	for (const From& val : vec)
+	{
+		out.push_back(conv(val));
+	}
+
+	return out;
+}
+
+/**
+ *  Maps the chars of STR by CONV.
+ */
+template <typename To>
+vector<To> mp(const string& str, typename NoOp<function<To (char)>>::type conv)
+{
+	vector<To> out;
+
+	for (char c : str)
+	{
+		out.push_back(conv(c));
+	}
+
+	return out;
+}
+
+/**
+ *  Executes CB for each value in VEC.
+ */
+template <typename T>
+void each(const vector<T>& vec, typename NoOp<function<void (const T&)>>::type cb)
+{
+	for (const T& val : vec)
+	{
+		cb(val);
+	}
+}
+
+/**
+ *  Executes CB for each char in STR.
+ */
+void each(const string& str, typename NoOp<function<void (char)>>::type cb)
+{
+	for (char c : str)
+	{
+		cb(c);
+	}
+}
+
+/**
+ *  Filters VEC by CB.
+ */
+template <typename T>
+vector<T> flt(const vector<T>& vec, typename NoOp<function<bool (const T&)>>::type cb)
+{
+	vector<T> out;
+
+	for (const T& val : vec)
+	{
+		if (cb(val))
+		{
+			out.push_back(val);
+		}
+	}
+
+	return out;
+}
 
 // String algorithms 
 
@@ -125,6 +270,22 @@ bool has(const string& str, const string& search)
 {
 	if (str.find(search) == string::npos) return false;
 	return true;
+}
+
+/**
+ *  Counts the number of SEARCH occurences in VEC.
+ */
+template <typename T>
+size_t cnt(const vector<T>& vec, const T& search)
+{
+	size_t ans = 0;
+
+	for (const T& i : vec)
+	{
+		if (i == search) ans++;
+	}
+
+	return ans;
 }
 
 /**
@@ -233,6 +394,93 @@ string rm(const string& str, const string& find)
 }
 
 /**
+ *  Removes  ** all **  instances of FIND in STR.
+ */
+string rm(const string& str, char find) { return rm(str, string(1, find)); }
+
+/**
+ *  Takes out all FIND from STR.
+ */
+string tk(const string& str, const vector<char>& find)
+{
+	string out = str;
+
+	for (char c : find)
+	{
+		out = rm(out, c);
+	}
+
+	return out;
+}
+
+/**
+ *  Keeps all FIND of STR, discarding the rest.
+ */
+string kp(const string& str, const vector<char>& find)
+{
+	string out;
+
+	for (char c : str)
+	{
+		if (has(find, c)) out += c;
+	}
+
+	return out;
+}
+
+const vector<char> vow = { 'A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u' };
+const vector<char> vowy = { 'A', 'E', 'I', 'O', 'U', 'Y', 'a', 'e', 'i', 'o',
+	'u', 'y' };
+const vector<char> cons = { 'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L',
+	'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z', 'b', 'c', 'd',
+	'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w',
+	'x', 'y', 'z' };
+const vector<char> consy = { 'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L',
+	'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Z', 'b', 'c', 'd', 'f',
+	'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w',
+	'x', 'z' };
+
+/**
+ *  Keeps vowels of STR.
+ */
+string kpvow(const string& str) { return kp(str, vow); }
+
+/**
+ *  Keeps consonants of STR.
+ */
+string kpcons(const string& str) { return kp(str, cons); }
+
+/**
+ *  Keeps vowels (incl. Y) of STR.
+ */
+string kpvowy(const string& str) { return kp(str, vowy); }
+
+/**
+ *  Keeps consonants (excl. Y) of STR.
+ */
+string kpconsy(const string& str) { return kp(str, consy); }
+
+/**
+ *  Takes out vowels of STR.
+ */
+string tkvow(const string& str) { return tk(str, vow); }
+
+/**
+ *  Takes out consonants of STR.
+ */
+string tkcons(const string& str) { return tk(str, cons); }
+
+/**
+ *  Takes out vowels (incl. Y) of STR.
+ */
+string tkvowy(const string& str) { return tk(str, vowy); }
+
+/**
+ *  Takes out consonants (excl. Y) of STR.
+ */
+string tkconsy(const string& str) { return tk(str, consy); }
+
+/**
  *  Splits STR delimited by FIND.
  *  FIND is left out in the returned vector<std::string>.
  */
@@ -254,9 +502,71 @@ vector<string> spl(const string& str, const string& find)
 }
 
 /**
+ *  Splits STR by contiguous blocks of chars.
+ */
+vector<string> splb(const string& str)
+{
+	vector<string> out;
+	if (str.size() == 0) return out;
+
+	char c = str[0];
+	size_t left = 0;
+	size_t len = 1;
+
+	for (size_t i = 1; i < str.size(); i++)
+	{
+		if (str[i] != c)
+		{
+			out.push_back(str.substr(left, len));
+			c = str[i];
+			left = i;
+			len = 1;
+		}
+		else
+		{
+			len++;
+		}
+	}
+
+	out.push_back(str.substr(left));
+	return out;
+}
+
+/**
  *  Bool: C is a whitespace char.
  */
 bool whtsp(char c) { return c == ' ' || c == '\t' || c == '\n'; }
+
+/**
+ *  Splits STR into words.
+ */
+vector<string> splw(const string& str)
+{
+	vector<string> out;
+	if (str.size() == 0) return out;
+
+	size_t left = 0;
+
+	for (size_t i = 0; i < str.size(); i++)
+	{
+		if (whtsp(str[i]))
+		{
+			if (i != 0 && !whtsp(str[i - 1]))
+			{
+				out.push_back(str.substr(left, i - left));
+			}
+
+			left = i + 1;
+		}
+	}
+
+	if (!whtsp(str[str.size() - 1]))
+	{
+		out.push_back(str.substr(left));
+	}
+
+	return out;
+}
 
 /**
  *  Removes leading and trailing whitespace from STR.
@@ -346,98 +656,47 @@ vector<string> halve(const string& str)
 	return seg(str, seg_siz);
 }
 
-// Higher order functions
-
-template <typename T>
-struct NoOp
-{
-	typedef T type;
-};
+const string& to_string(const string& str) { return str; }
 
 /**
- *  Maps values from VEC by CONV.
- */
-template <typename To, typename From>
-vector<To> mp(const vector<From>& vec, typename NoOp<function<To (const From&)>>::type conv)
-{
-	vector<To> out;
-
-	for (const From& val : vec)
-	{
-		out.push_back(conv(val));
-	}
-
-	return out;
-}
-
-/**
- *  Maps the chars of STR by CONV.
- */
-template <typename To>
-vector<To> mp(const string& str, typename NoOp<function<To (char)>>::type conv)
-{
-	vector<To> out;
-
-	for (char c : str)
-	{
-		out.push_back(conv(c));
-	}
-
-	return out;
-}
-
-/**
- *  Executes CB for each value in VEC.
+ *  Joins the numbers in VEC into a string, seperated by SEP.
  */
 template <typename T>
-void each(const vector<T>& vec, typename NoOp<function<void (const T&)>>::type cb)
+string jn(const vector<T>& vec, string sep = " ")
 {
-	for (const T& val : vec)
-	{
-		cb(val);
-	}
-}
+	string out;
 
-/**
- *  Executes CB for each char in STR.
- */
-void each(const string& str, typename NoOp<function<void (char)>>::type cb)
-{
-	for (char c : str)
+	for (size_t i = 0; i < vec.size(); i++)
 	{
-		cb(c);
-	}
-}
-
-/**
- *  Filters VEC by CB.
- */
-template <typename T>
-vector<T> flt(const vector<T>& vec, typename NoOp<function<bool (const T&)>>::type cb)
-{
-	vector<T> out;
-
-	for (const T& val : vec)
-	{
-		if (cb(val))
-		{
-			out.push_back(val);
-		}
+		out += to_string(vec[i]);
+		if (i != vec.size() - 1) out += sep;
 	}
 
 	return out;
 }
 
 /**
- *  Sums the values in VEC.
- *  @tparam  Ret  The number return type. Defaults to int32_t.
+ *  Matches STR with REGEX.
  */
-template <typename Ret = sl, typename T>
-Ret sum(const vector<T>& vec)
+bool remat(const string& str, const string& regex)
 {
-	sl out = 0;
-	for (const T& val : vec) out += val;
-	return out;
+	return regex_match(str, std::regex(regex));
+}
+
+/**
+ *  Searches STR for REGEX.
+ */
+bool resrc(const string& str, const string& regex)
+{
+	return regex_search(str, std::regex(regex));
+}
+
+/**
+ *  Replaces in STR with REPL by REGEX.
+ */
+string rerpl(const string& str, const string& regex, const string& repl)
+{
+	return regex_replace(str, std::regex(regex), repl);
 }
 
 // Time
