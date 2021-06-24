@@ -358,6 +358,30 @@ string pade(const string& str, size_t len, char c)
 }
 
 /**
+ *  Pad  ** begin **  of int into std::string.
+ *  Pads the beginning with C until len(STR) == LEN.
+ */
+string padb(ssize_t num, size_t len, char c)
+{
+	string str = to_string(num);
+	if (str.size() >= len) return str;
+	size_t diff = len - str.size();
+	return string(diff, c) + str;
+}
+
+/**
+ *  Pad  ** begin **  of int into std::string.
+ *  Pads the end with C until len(STR) == LEN.
+ */
+string pade(ssize_t num, size_t len, char c)
+{
+	string str = to_string(num);
+	if (str.size() >= len) return str;
+	size_t diff = len - str.size();
+	return str + string(diff, c);
+}
+
+/**
  *  Centres STR with C padded to LEN on the left and right.
  */
 string centre(const string& str, size_t len, char c = ' ')
@@ -878,5 +902,5 @@ constexpr Lt operator"" _nm(long double v) { return Lt(v / Lt::nm_per_m); }
 
 int main()
 {
-
+	
 }
