@@ -99,11 +99,33 @@ sl stl(const string& str) { return stoll(str); }
 #define gsl(name) sl name; cin >> name
 
 #define gdb(name) db name; cin >> name
+#define ig cin.ignore()
 
 // Putting stuff on stdout
 
 #define pf(fmt, ...) printf(fmt, ##__VA_ARGS__)
 #define pnl cout << '\n'
+
+// Numeric algorithms
+
+/**
+ *  Returns the prime factors of NUM in ascending order.
+ *  Does  ** not **  include 1 or NUM.
+ */
+vector<ssize_t> fac(ssize_t num)
+{
+	vector<ssize_t> out;
+
+	for (ssize_t i = 2; i < num; i++)
+	{
+		if (num % i == 0)
+		{
+			out.push_back(i);
+		}
+	}
+
+	return out;
+}
 
 // Vector algorithms
 
@@ -473,6 +495,10 @@ string kp(const string& str, const vector<char>& find)
 	return out;
 }
 
+const vector<char> alpha = { 'A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u',
+	'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S',
+	'T', 'V', 'W', 'X', 'Y', 'Z', 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
+	'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z' };
 const vector<char> vow = { 'A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u' };
 const vector<char> vowy = { 'A', 'E', 'I', 'O', 'U', 'Y', 'a', 'e', 'i', 'o',
 	'u', 'y' };
@@ -484,6 +510,11 @@ const vector<char> consy = { 'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L',
 	'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Z', 'b', 'c', 'd', 'f',
 	'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w',
 	'x', 'z' };
+
+/**
+ *  Keeps [A-Za-z] of STR.
+ */
+string kpalpha(const string& str) { return kp(str, alpha); }
 
 /**
  *  Keeps vowels of STR.
@@ -504,6 +535,11 @@ string kpvowy(const string& str) { return kp(str, vowy); }
  *  Keeps consonants (excl. Y) of STR.
  */
 string kpconsy(const string& str) { return kp(str, consy); }
+
+/**
+ *  Takes out [A-Za-z] of STR.
+ */
+string tkalpha(const string& str) { return tk(str, alpha); }
 
 /**
  *  Takes out vowels of STR.
