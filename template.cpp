@@ -105,6 +105,7 @@ sl stl(const string& str) { return stoll(str); }
 
 #define pf(fmt, ...) printf(fmt, ##__VA_ARGS__)
 #define pnl cout << '\n'
+#define el << '\n'
 
 // Numeric algorithms
 
@@ -151,9 +152,19 @@ bool has(const vector<T>& vec, const T& search)
 template <typename Ret = sl, typename T>
 Ret sum(const vector<T>& vec)
 {
-	sl out = 0;
+	Ret out = 0;
 	for (const T& val : vec) out += val;
 	return out;
+}
+
+/**
+ *  Computes the average of VEC.
+ *  @tparam  Ret  The number return type. Defaults to int32_t.
+ */
+template <typename Ret = sl, typename T>
+Ret avg(const vector<T>& vec)
+{
+	return sum<Ret>(vec) / (Ret) vec.size();
 }
 
 /**
