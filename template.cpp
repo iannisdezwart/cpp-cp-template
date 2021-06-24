@@ -157,6 +157,86 @@ Ret sum(const vector<T>& vec)
 }
 
 /**
+ *  Gets the min value of VEC.
+ */
+template <typename T>
+T min(const vector<T>& vec)
+{
+	T min = numeric_limits<T>::max();
+
+	for (const T& val : vec)
+	{
+		if (val < min)
+		{
+			min = val;
+		}
+	}
+
+	return min;
+}
+
+/**
+ *  Gets the max value of VEC.
+ */
+template <typename T>
+T max(const vector<T>& vec)
+{
+	T max = numeric_limits<T>::min();
+
+	for (const T& val : vec)
+	{
+		if (val > max)
+		{
+			max = val;
+		}
+	}
+
+	return max;
+}
+
+/**
+ *  Gets the index of the min value of VEC.
+ */
+template <typename T>
+T mini(const vector<T>& vec)
+{
+	T min = numeric_limits<T>::max();
+	size_t min_i;
+
+	for (size_t i = 0; i < vec.size(); i++)
+	{
+		if (vec[i] < min)
+		{
+			min_i = i;
+			min = vec[i];
+		}
+	}
+
+	return min_i;
+}
+
+/**
+ *  Gets the index of the max value of VEC.
+ */
+template <typename T>
+T maxi(const vector<T>& vec)
+{
+	T max = numeric_limits<T>::min();
+	size_t max_i;
+
+	for (size_t i = 0; i < vec.size(); i++)
+	{
+		if (vec[i] > max)
+		{
+			max_i = i;
+			max = vec[i];
+		}
+	}
+
+	return max_i;
+}
+
+/**
  *  Reverses VEC.
  */
 template <typename T>
