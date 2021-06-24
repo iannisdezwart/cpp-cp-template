@@ -134,6 +134,22 @@ Ret sum(const vector<T>& vec)
 	return out;
 }
 
+/**
+ *  Reverses VEC.
+ */
+template <typename T>
+vector<T> rev(const vector<T>& vec)
+{
+	vector<T> out;
+
+	for (size_t i = vec.size(); i != 0; i--)
+	{
+		out.push_back(vec[i - 1]);
+	}
+
+	return out;
+}
+
 // Higher order functions
 
 template <typename T>
