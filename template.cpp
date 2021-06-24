@@ -37,31 +37,36 @@ using vs = vector<string>;
  *  Repeat loop.
  *  i: [ 0, times >.
  */
-#define lp(i, times) for (ssize_t i = 0; i < times; i++)
+#define lp(i, times) for (auto [ i, first, last ] = tuple(0, true, false); \
+	first = i == 0, last = i == times - 1, i < times; i++)
 
 /**
  *  Regular for loop.
  *  i: [ start, end >.
  */
-#define fr(i, start, end) for (ssize_t i = start; i < end; i++)
+#define fr(i, start, end) for (auto [ i, first, last ] = tuple(start, true, false); \
+	first = i == start, last = i == end - 1, i < end; i++)
 
 /**
  *  Reverse repeat loop.
  *  i: < times, 0 ].
  */
-#define rlp(i, times) for (ssize_t i = times - 1; i >= 0; i--)
+#define rlp(i, times) for (auto [ i, first, last ] = tuple(times - 1, true, false); \
+	first = i == 0, last = i == times - 1, i >= 0; i--)
 
 /**
  *  Reverse for loop.
  *  i: < end, start ].
  */
-#define rfr(i, start, end) for (ssize_t i = end - 1; i >= start; i--)
+#define rfr(i, start, end) for (auto [ i, first, last ] = tuple(end - 1, true, false); \
+	first = i == start, last = i == end - 1, i >= start; i--)
 
 /**
  *  Loop over items  ** by reference **.
  *  i: items in data structure.
  */
-#define lpi(i, vec) for (auto& i : vec)
+#define lpi(i, vec) for (auto [ i, i##i, first, last ] = tuple(vec[0], 0, true, false); \
+	i = vec[i##i], first = i##i == 0, last = i##i == len(vec) - 1, i##i < len(vec); i##i++)
 
 // Utility functions
 
@@ -211,7 +216,7 @@ vector<T> flt(const vector<T>& vec, typename NoOp<function<bool (const T&)>>::ty
 	return out;
 }
 
-// String algorithms 
+// String algorithms
 
 /**
  *  Counts the number of SEARCH occurences in STR.
