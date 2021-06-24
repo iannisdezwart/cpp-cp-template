@@ -343,7 +343,7 @@ string padb(const string& str, size_t len, char c)
 {
 	if (str.size() >= len) return str;
 	size_t diff = len - str.size();
-	return string(len, c) + str;
+	return string(diff, c) + str;
 }
 
 /**
@@ -354,7 +354,7 @@ string pade(const string& str, size_t len, char c)
 {
 	if (str.size() >= len) return str;
 	size_t diff = len - str.size();
-	return str + string(len, c);
+	return str + string(diff, c);
 }
 
 /**
@@ -878,5 +878,5 @@ constexpr Lt operator"" _nm(long double v) { return Lt(v / Lt::nm_per_m); }
 
 int main()
 {
-	
+
 }
