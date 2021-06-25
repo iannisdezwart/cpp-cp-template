@@ -372,6 +372,29 @@ size_t cnt(const string& str, char search)
 	return count(str.begin(), str.end(), search);
 }
 
+/**
+ *  Returns the number of occurences of each char in STR.
+ */
+map<char, size_t> cnto(const string& str)
+{
+	map<char, size_t> chars;
+
+	for (char c : str)
+	{
+		chars[c]++;
+	}
+
+	return chars;
+}
+
+/**
+ *  Returns the number of unique characters in STR.
+ */
+size_t uniq(const string& str)
+{
+	return cnto(str).size();
+}
+
 // Todo: could improve time by using for loop.
 
 /**
